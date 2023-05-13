@@ -65,12 +65,19 @@ const GetBahanByKodebahan = async (req, res)=> {
         console.log(error)
         resError(500, process.env.ISE, error, res)
     })
+}
 
+const deleteBahanBaku = async(req, res) => {
+    const kodebahan = req.params.kodebahan  
+    await Bahan.destroy({where: {kodebahan}})
+    .then(response(200, "SUCCESS", [], res))
+    .catch(error => console.log(error))
 }
 
 module.exports = { 
     GetBahan,
     AddBahan,
     ListPemakaian, 
-    GetBahanByKodebahan
+    GetBahanByKodebahan,
+    deleteBahanBaku
 }

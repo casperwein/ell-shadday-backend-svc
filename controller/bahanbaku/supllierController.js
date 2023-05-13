@@ -38,7 +38,6 @@ const UpdateSuplier = async(req, res) => {
 
 const DeleteSuplier = async(req, res) => {
     const id = req.params.id
-
     await Suplier.destroy({where: {id}}).then(()=> {
         return response(200, "DELETED SUCCESS", [], res)
     }).catch(error => {
