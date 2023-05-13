@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://postgres:mydatabase@localhost:5432/ellShaddayInventory
+    depends_on:
+      - db
+  db:
+    ports:
+      - "5432:5432"
+    image: postgres:14
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mydatabase
+      POSTGRES_DB: ellShaddayInventory
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
