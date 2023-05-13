@@ -22,8 +22,17 @@ const AddKategori = async(req, res) => {
     })
 }
 
+const DeleteKategori = async(req, res) => {
+    const id = req.params.id
+
+    await Kategori.destroy({where: {id}})
+    .then(response(200, "SUCCESS", [], res))
+    .catch(error => console.log(error))
+}
+
 
 module.exports = {
     GetAllKategori,
-    AddKategori
+    AddKategori,
+    DeleteKategori
 }

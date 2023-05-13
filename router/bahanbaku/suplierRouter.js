@@ -6,11 +6,7 @@ const { admin } = require("../../middleware/access-controll")
 
 router.get("/", suplierController.GetSuplierData)
 router.post("/add", suplierController.AddSuplier)
-
-//TODO: please test update and delete Suplier FUNCTION
-
-router.put("/", suplierController.AddSuplier)
-router.delete("/", suplierController.AddSuplier)
-
+router.put("/:id", suplierController.UpdateSuplier)
+router.delete("/:id", suplierController.DeleteSuplier)
 
 module.exports = router

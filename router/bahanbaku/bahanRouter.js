@@ -11,6 +11,7 @@ const router = express.Router()
 router.get("/", Bahan.GetBahan)
 router.post("/add", Bahan.AddBahan)
 router.get("/:kodebahan", Bahan.GetBahanByKodebahan)
+router.delete("/:kodebahan", Bahan.deleteBahanBaku)
 
 
 module.exports = router
