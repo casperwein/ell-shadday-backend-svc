@@ -43,12 +43,14 @@ const AddBahan = async(data)=> {
     const warna = data.warna
     const gambar = data.gambar
     const satuan = data.satuan
+    const ukuran = data.ukuran
+    const kategori = data.kategori
     // console.log('INI DATA ADD BAHAN ' + warna)
     // console.log("inilah datanya: " + kodebahan + " " + nama + " " + warna+ " "  + gambar+ " "  + satuan)
 
     await Bahan.create({
-        kodebahan, nama, warna, gambar, satuan,
-        jumlah_unit: 0,
+        kodebahan, nama, warna, gambar, satuan, ukuran, kategori,
+        roll_ball_quantity: 0,
         total_yard_kg : 0.0,
         yard_kg_clean : 0.0,
         yard_kg_sisa : 0.0
