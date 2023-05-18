@@ -17,7 +17,7 @@ module.exports = {
       kodebahan: {
         type: Sequelize.STRING
       },
-      baku_desc: {
+      bahan_bahu_desc: {
         type: Sequelize.STRING
       },
       tanggal_terima: {
@@ -26,32 +26,20 @@ module.exports = {
       tempat_penyimpanan: {
         type: Sequelize.STRING
       },
-      type_bahan: {
-        type: Sequelize.STRING
-      },
-      roll_ball: {
-        type: Sequelize.STRING
-      },
-      quantity: {
+      roll_ball_quantity: {
         type: Sequelize.INTEGER
       },
-      yard: {
-        type: Sequelize.FLOAT
-      },
-      kg: {
-        type: Sequelize.FLOAT
+      kg_yard_meter_quantity: {
+        type: Sequelize.INTEGER
       },
       is_return: {
         type: Sequelize.STRING
       },
-      jumlah_return: {
+      roll_ball_return: {
         type: Sequelize.INTEGER
       },
-      yard_return: {
-        type: Sequelize.FLOAT
-      },
-      kg_return: {
-        type: Sequelize.FLOAT
+      yard_kg_meter_return: {
+        type: Sequelize.INTEGER
       },
       penerima: {
         type: Sequelize.STRING
@@ -62,7 +50,7 @@ module.exports = {
       note: {
         type: Sequelize.STRING
       },
-      picture: {
+      gambar: {
         type: Sequelize.STRING
       },
       faktur: {
@@ -71,6 +59,11 @@ module.exports = {
       list: {
         type: Sequelize.STRING
       },
+      list_return: {
+        type: Sequelize.STRING
+      },
+
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

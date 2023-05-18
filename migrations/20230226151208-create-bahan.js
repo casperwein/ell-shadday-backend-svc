@@ -20,7 +20,7 @@ module.exports = {
       gambar: {
         type: Sequelize.STRING
       },
-      jumlah_unit: {
+      roll_ball_quantity: {
         type: Sequelize.INTEGER
       },
       total_yard_kg: {
@@ -33,6 +33,12 @@ module.exports = {
         type: Sequelize.FLOAT,
       },
       satuan: {
+        type: Sequelize.STRING
+      },
+      ukuran: {
+        type: Sequelize.STRING
+      },
+      kategori: {
         type: Sequelize.STRING
       },
       createdAt: {
