@@ -45,8 +45,6 @@ const AddBahan = async(data)=> {
     const satuan = data.satuan
     const ukuran = data.ukuran
     const kategori = data.kategori
-    // console.log('INI DATA ADD BAHAN ' + warna)
-    // console.log("inilah datanya: " + kodebahan + " " + nama + " " + warna+ " "  + gambar+ " "  + satuan)
 
     await Bahan.create({
         kodebahan, nama, warna, gambar, satuan, ukuran, kategori,
@@ -59,8 +57,6 @@ const AddBahan = async(data)=> {
 
 const GetBahanByKodebahan = async (req, res)=> {
     const kodebahan = req.params.kodebahan
-    console.log(kodebahan)
-    
     await Bahan.findAll({where:{kodebahan}}).then(data => {
         response(200, "SUCCESS", data, res)
     }).catch(error => {
@@ -69,8 +65,20 @@ const GetBahanByKodebahan = async (req, res)=> {
     })
 }
 
-const deleteBahanBaku = async(req, res) => {
-    const kodebahan = req.params.kodebahan  
+const EditBahanBaku = async(req, res) => {
+    const kodebahan = req.params.kodebahan
+    const data = {nama, kategori, ukuran, warna, satuan} = req.body
+
+    await Bahan.update(data, {where: {kodebahan}, returning:true}).then((bhn) => {
+        response(200, "SUCCESS", bhn, res)
+    }).catch(error => {
+        console.log(error)
+        resError(500, process.env.ISE, error, res)
+    })
+}
+
+const DeleteBahanBaku = async(req, res) => {
+    const kodebahan = req.params.kodebahan 
     await Bahan.destroy({where: {kodebahan}})
     .then(response(200, "SUCCESS", [], res))
     .catch(error => console.log(error))
@@ -81,5 +89,6 @@ module.exports = {
     AddBahan,
     ListPemakaian, 
     GetBahanByKodebahan,
-    deleteBahanBaku
+    DeleteBahanBaku,
+    EditBahanBaku
 }
