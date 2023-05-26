@@ -9,14 +9,14 @@ const {AddReorderPoint} = require("../reorder/reorderPointController")
 
 
 const AddPemakaianBarang = async(req, res) => {
-    const jenis = "AKSRS"
-    const gen_id = dateNow()
-    const id = jenis + "_" + gen_id
-
     let {
         po_produk, kodebahan, cutterId, 
         panjang_berat, jumlah_gambar, jumlah_lembar, yard_kg, tanggal_pemakaian, ukuran
     } = req.body.pemakaian
+
+    const jenis = po_produk
+    const gen_id = dateNow()
+    const id = jenis + "_" + gen_id
     
     let total_yard_kg, yard_kg_pemakaian, jumlah_roll_ball,
         total_potongan_pakaian, lusin, sisa_flag, total_yard_kg_sisa
@@ -108,8 +108,19 @@ const GetAllDataPemakaian = async(req, res) => {
     })
 }
 
+const GetPemakaianBahanByIDPemakaian = async(req, res) => {
+    const id = req.params.id
+    await Pemakaian.findOne({where: {id}}).then(data => {
+        response(200, "SUCCESS", data, res)
+    }).catch(error => {
+        console.log(error)
+        resError(500, process.env.ISE, error, res)
+    })
+}
+
 
 module.exports = {
     AddPemakaianBarang,
-    GetAllDataPemakaian
+    GetAllDataPemakaian,
+    GetPemakaianBahanByIDPemakaian
 }
