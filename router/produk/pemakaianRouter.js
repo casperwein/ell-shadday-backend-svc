@@ -8,6 +8,7 @@ const { admin } = require("../../middleware/access-controll")
 router.post("/add", pemakaianController.AddPemakaianBarang)
 router.get("/", pemakaianController.GetAllDataPemakaian)
 router.get("/:id", pemakaianController.GetPemakaianBahanByIDPemakaian)
+router.put("/edit/:id", pemakaianController.EditPemakaian)
 
 
 module.exports = router
