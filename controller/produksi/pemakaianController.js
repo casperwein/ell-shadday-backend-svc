@@ -12,7 +12,7 @@ const AddPemakaianBarang = async(req, res) => {
     let {
         po_produk, kodebahan, cutterId, 
         panjang_berat, jumlah_gambar, jumlah_lembar, yard_kg, tanggal_pemakaian, ukuran
-    } = req.body.pemakaian
+    } = req.body
 
     const jenis = po_produk
     const gen_id = dateNow()
@@ -47,7 +47,7 @@ const AddPemakaianBarang = async(req, res) => {
         id, po_produk, kodebahan, cutterId, 
         panjang_berat, jumlah_gambar, jumlah_lembar, yard_kg, tanggal_pemakaian,
         total_yard_kg, yard_kg_pemakaian, jumlah_roll_ball, ukuran,
-        total_potongan_pakaian, lusin, sisa_flag,   
+        total_potongan_pakaian, lusin, sisa_flag, total_yard_kg_sisa   
     }).then(pemakaian => {
         // update data bahan baku
         Bahan.findOne({where: {kodebahan}}).then(bahan => {
