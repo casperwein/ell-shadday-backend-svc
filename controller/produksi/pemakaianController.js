@@ -118,9 +118,35 @@ const GetPemakaianBahanByIDPemakaian = async(req, res) => {
     })
 }
 
+const EditPemakaian = async(req, res) => {
+    const id = req.params.id
+
+    const data = { po_produk, kodebahan, cutterId, 
+        panjang_berat, jumlah_gambar, jumlah_lembar, yard_kg, ukuran} = req.body
+
+    await Pemakaian.update(data, {where: {id}, returning:true}).then(d => {
+        response(200, "SUCCESS", d, res)
+    }).catch(e => {
+        console.log(e)
+        resError(500, process.env.ISE, e, res)
+    })
+}
+
+const GetPemakaianByPOProduksi = async(req, res) => {
+    const po_produk = req.params.po_produk
+
+    await Pemakaian.findAll({where:{po_produk}}).then(p => {
+        response(200, "SUCCESS", p, res)
+    }).catch(e => {
+        console.log(e)
+        resError(500, process.env.ISE, e, res)
+    })
+}
 
 module.exports = {
     AddPemakaianBarang,
     GetAllDataPemakaian,
-    GetPemakaianBahanByIDPemakaian
+    GetPemakaianBahanByIDPemakaian,
+    EditPemakaian,
+    GetPemakaianByPOProduksi
 }

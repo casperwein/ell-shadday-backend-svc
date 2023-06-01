@@ -7,6 +7,7 @@ const { admin } = require("../../middleware/access-controll")
 
 router.post("/add", produkController.AddProduk)
 router.get("/", produkController.GetAllProduk)
+router.get("/:po", produkController.GetProdukById)
 
 
 module.exports = router
