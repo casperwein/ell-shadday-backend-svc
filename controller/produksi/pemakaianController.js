@@ -132,9 +132,21 @@ const EditPemakaian = async(req, res) => {
     })
 }
 
+const GetPemakaianByPOProduksi = async(req, res) => {
+    const po_produk = req.params.po_produk
+
+    await Pemakaian.findAll({where:{po_produk}}).then(p => {
+        response(200, "SUCCESS", p, res)
+    }).catch(e => {
+        console.log(e)
+        resError(500, process.env.ISE, e, res)
+    })
+}
+
 module.exports = {
     AddPemakaianBarang,
     GetAllDataPemakaian,
     GetPemakaianBahanByIDPemakaian,
-    EditPemakaian
+    EditPemakaian,
+    GetPemakaianByPOProduksi
 }
