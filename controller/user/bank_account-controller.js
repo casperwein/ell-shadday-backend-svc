@@ -49,9 +49,21 @@ const deleteBankAcc =async(req, res) => {
     })
 }
 
+const GetDataBankByUserID = async(req, res) => {
+    const userID = req.params.userID
+
+    await BankAcc.findOne({where: {userID}}).then( data => {
+        return response(200, "Updated Success", data, res)
+    }).catch(error => {
+        console.log(error)
+        return resError(500, msgISE, error, res)
+    })
+}
+
 module.exports = {
     GetAllBankAcc,
     addBankAccount,
     updateBankAcc,
-    deleteBankAcc
+    deleteBankAcc,
+    GetDataBankByUserID
 }

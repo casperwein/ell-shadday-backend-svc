@@ -5,7 +5,8 @@ const auth = require("../../helper/authentication").verify
 const router = express.Router()
 
 router.get("/", BankAcc.GetAllBankAcc)
-router.post("/", auth, BankAcc.addBankAccount)
+router.get("/id/:userID", BankAcc.GetDataBankByUserID)
+router.post("/", BankAcc.addBankAccount)
 
 //TODO: please test update and delete bank account data
 router.put("/:id", auth, BankAcc.updateBankAcc)

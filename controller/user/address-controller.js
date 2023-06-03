@@ -57,9 +57,21 @@ const deleteAddress = async(req,res) => {
     })
 }
 
+const GetDataAddressByUserID = async(req, res) => {
+    const userID = req.params.userID
+
+    await Address.findOne({where: {userID}}).then(data => {
+        response(200, "Success", data, res)
+    }).catch(error => {
+        console.log(error)
+        return resError(500, errISE, error, res)
+    })
+}
+
 module.exports = {
     addUserAddress,
     getDataAddress,
     updateAddress, 
-    deleteAddress
+    deleteAddress,
+    GetDataAddressByUserID
 }
