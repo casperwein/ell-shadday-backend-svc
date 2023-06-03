@@ -101,25 +101,6 @@ module.exports = (sequelize, DataTypes) => {
                 },
             },
         },
-
-        place_dob: {
-            type: DataTypes.STRING,
-            validate: {
-                notEmpty: {
-                    args: true,
-                    msg: "Place dob is required"
-                }
-            }
-        },
-        dob: {
-            type: DataTypes.STRING,
-            validate: {
-                notEmpty: {
-                    args: true,
-                    msg: "Place dob is required"
-                }
-            }
-        },
         gender: {
             type: DataTypes.STRING,
             validate: {
@@ -141,7 +122,7 @@ module.exports = (sequelize, DataTypes) => {
             validate: {
                 isIn: {
                     args: [
-                        ["Admin", "Superadmin", "Leader", "CMT", "designer"]
+                        ["Admin", "Superadmin", "Leader", "CMT", "Designer"]
                     ],
                     msg: "role must be Superadmin, Admin, leader, Designer or CMT",
                 },

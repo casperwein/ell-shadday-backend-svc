@@ -9,7 +9,7 @@ const router = express.Router()
 // router.use(verify, admin)
 
 router.put("/update-status/:id", Reorder.UpdateStatusApproveReorder)
-router.get("/", Reorder.GetDataBerkala)
+router.get("/", Reorder.GetAllReorder)
 
 
 module.exports = router
