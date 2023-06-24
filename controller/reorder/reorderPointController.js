@@ -1,9 +1,10 @@
 const ReorderPoint = require("../../models/index").reorder_point_log
 const {response, setLog, resError} = require("../../helper/response")
 const {AutoAddNewPembelian} = require("./pembelianController")
+const {Op} = require("sequelize")
 
 const AddReorderPoint = async(data) => {
-    let status = "W"
+    let status = "Wait For"
     const tanggal_reorder_point = new Date()
     let msg
     await ReorderPoint.create({
@@ -19,12 +20,15 @@ const AddReorderPoint = async(data) => {
 
 const UpdateStatusApproveReorder = async(req, res) => {
     const id = req.params.id
-    const statusNow = req.body.status
+    const {statusNow, quantity} = req.body.status
+
+    console.log(statusNow + " " + quantity)
 
     await ReorderPoint.findOne({where: {id}}).then(data => {
         data.status = statusNow;
+        data.quantity = quantity;
         data.save()
-        if(statusNow == "Wait For") {
+        if(statusNow == "Approve") {
             AutoAddNewPembelian(req, res, data)
         }
         response(200, "Update Status Approve SUCCESS", data, res)
@@ -56,8 +60,24 @@ setInterval(() => {
   }, 240 * 60 * 1000); //*set ke 240 --> setial 4 jam
 
 const GetAllReorder = async(req, res) => {
-    await ReorderPoint.findAll().then(order => {
+    await ReorderPoint.findAll({where: 
+        {status:{
+            [Op.or]: ["Wait For", 'Rejected', 'Processing']
+        }}
+    }).then(order => {
         response(201, "SUCCES", order, res)
+    }).catch(error => {
+        console.log(error)
+        resError(500, process.env.ISE, error, res)
+    })
+}
+
+
+const GetReorderByKodebahan = async(req, res) => {
+    const kodebahan = req.params.kodebahan
+
+    await ReorderPoint.findOne({where:{kodebahan}}).then(r => {
+        response(200, "get data succesfully", r, res)
     }).catch(error => {
         console.log(error)
         resError(500, process.env.ISE, error, res)
@@ -68,5 +88,6 @@ module.exports = {
     AddReorderPoint,
     GetAllReorder,
     UpdateStatusApproveReorder,
-    GetDataBerkala
+    GetDataBerkala,
+    GetReorderByKodebahan
 }
