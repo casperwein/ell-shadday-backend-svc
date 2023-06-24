@@ -8,8 +8,9 @@ const router = express.Router()
 
 // router.use(verify, admin)
 
-router.put("/update-status/:id", Reorder.UpdateStatusApproveReorder)
+router.put("/update-reorder/:id", Reorder.UpdateStatusApproveReorder)
 router.get("/", Reorder.GetAllReorder)
-
+router.get("/:kodebahan", Reorder.GetReorderByKodebahan)
+    
 
 module.exports = router
