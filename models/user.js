@@ -55,7 +55,6 @@ module.exports = (sequelize, DataTypes) => {
                 }
             }
         },
-
         username: {
             type: DataTypes.STRING,
             unique: {
@@ -69,7 +68,6 @@ module.exports = (sequelize, DataTypes) => {
                 }
             }
         },
-
         email: {
             type: DataTypes.STRING,
             unique: {
@@ -87,7 +85,6 @@ module.exports = (sequelize, DataTypes) => {
                 },
             }
         },
-
         password: {
             type: DataTypes.STRING,
             validate: {
@@ -109,30 +106,26 @@ module.exports = (sequelize, DataTypes) => {
                         "Male", "Female"
                     ],
                     msg: "gender must be Male or Female",
-                },
-                notEmpty: {
-                    args: true,
-                    msg: "gender is required",
-                },
+                }
             },
         },
-
+        place_dob: {
+            type: DataTypes.DATE,
+        },
         role: {
             type: DataTypes.STRING,
             validate: {
                 isIn: {
                     args: [
-                        ["Admin", "Superadmin", "Leader", "CMT", "Designer"]
+                        ["Admin", "Superadmin", "Pimpinan", "CMT", "Designer"]
                     ],
-                    msg: "role must be Superadmin, Admin, leader, Designer or CMT",
-                },
-                notEmpty: {
-                    args: true,
-                    msg: "Role is required",
+                    msg: "role must be Admin, Superadmin, Pimpinan, CMT, Designer",
                 },
             },
         },
-
+        dob: {
+            type: DataTypes.STRING,
+        },
         phone_number: {
             type: DataTypes.STRING,
             validate: {
@@ -145,7 +138,9 @@ module.exports = (sequelize, DataTypes) => {
                     msg: "Input valid Phone Number"
                 }
             }
-        }
+        },
+        status: DataTypes.STRING,
+        gambar: DataTypes.STRING,
     }, {
         sequelize,
         modelName: 'user',

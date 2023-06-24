@@ -28,7 +28,9 @@ const Login = async(req, res) => {
             email: user.email,
             gender: user.gender,
             role: user.role,
-            phone_number: user.phone_number
+            phone_number: user.phone_number,
+            gambar: user.gambar,
+            status: user.status
         }
 
         const token = generateToken(data)

@@ -33,6 +33,12 @@ module.exports = {
             role: {
                 type: Sequelize.STRING
             },
+            status: {
+                type: Sequelize.STRING
+            },
+            gambar: {
+                type: Sequelize.STRING
+            },
             phone_number: {
                 type: Sequelize.STRING
             },
