@@ -68,6 +68,7 @@ const AddPemakaianBarang = async(req, res) => {
             const newQuantity = bahan.jumlah_unit
             const safetyStock = 10
 
+            // reorder point
             if (newQuantity <= safetyStock) {
                 const data = {
                     kodebahan, newQuantity, warna: bahan.warna

@@ -33,8 +33,7 @@ const AddBahanBaku = async(req, res) => {
                 kodebahan: kodebahan, 
                 nama,
                 warna: warna, 
-                gambar:image,
-                satuan
+                gambar:image
             }
             AddBahan(payload)  
         }

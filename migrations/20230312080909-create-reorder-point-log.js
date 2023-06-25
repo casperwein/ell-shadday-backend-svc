@@ -23,6 +23,12 @@ module.exports = {
       status: {
         type: Sequelize.STRING
       },
+      revisiDesc: {
+        type: Sequelize.STRING
+      },
+      lastUser: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
