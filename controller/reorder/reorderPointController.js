@@ -20,15 +20,22 @@ const AddReorderPoint = async(data) => {
 
 const UpdateStatusApproveReorder = async(req, res) => {
     const id = req.params.id
-    const {statusNow, quantity} = req.body.status
-
-    console.log(statusNow + " " + quantity)
-
+    let {status, quantity, revisiDesc, lastUser} = req.body
+    if (status === "Request") {
+        status = "Wait For"
+    }
     await ReorderPoint.findOne({where: {id}}).then(data => {
-        data.status = statusNow;
-        data.quantity = quantity;
+        data.status = status
+        data.quantity = quantity
+        data.lastUser = lastUser
+        if (revisiDesc !== "") {
+            data.revisiDesc = revisiDesc
+        } else {
+            data.revisiDesc = data.revisiDesc
+        }
         data.save()
-        if(statusNow == "Approve") {
+
+        if(status === 'Approved') {
             AutoAddNewPembelian(req, res, data)
         }
         response(200, "Update Status Approve SUCCESS", data, res)
@@ -41,7 +48,7 @@ const UpdateStatusApproveReorder = async(req, res) => {
 //**hit db secara berkala */
 const GetDataBerkala = async(req, res) => {
     await ReorderPoint.findAll({where: {status: "Wait For"}}).then(order => {
-        if(order.length != 0) {
+        if(order.length !== 0) {
             const now = new Date()
             const msg = `${now} Alert: Terdapat ${order.length} bahan baku dengan status "Wait For" pada list reorder!`
             console.log(msg)
@@ -62,21 +69,20 @@ setInterval(() => {
 const GetAllReorder = async(req, res) => {
     await ReorderPoint.findAll({where: 
         {status:{
-            [Op.or]: ["Wait For", 'Rejected', 'Processing']
+            [Op.or]: ['Wait For', 'Rejected', 'Rop', 'Suspend', 'Revisi']
         }}
     }).then(order => {
-        response(201, "SUCCES", order, res)
+        response(201, "SUCCESS", order, res)
     }).catch(error => {
         console.log(error)
         resError(500, process.env.ISE, error, res)
     })
 }
 
+const GetReorderByID = async(req, res) => {
+    const id = req.params.id
 
-const GetReorderByKodebahan = async(req, res) => {
-    const kodebahan = req.params.kodebahan
-
-    await ReorderPoint.findOne({where:{kodebahan}}).then(r => {
+    await ReorderPoint.findOne({where:{id}}).then(r => {
         response(200, "get data succesfully", r, res)
     }).catch(error => {
         console.log(error)
@@ -89,5 +95,5 @@ module.exports = {
     GetAllReorder,
     UpdateStatusApproveReorder,
     GetDataBerkala,
-    GetReorderByKodebahan
+    GetReorderByID
 }

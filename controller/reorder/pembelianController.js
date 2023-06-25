@@ -1,11 +1,12 @@
 const Pembelian = require("../../models/index").pembelian
 const {response, setLog, resError} = require("../../helper/response")
+const generatePurchaseOrder = require("../../helper/generatePurchaseOrder")
 
 const AutoAddNewPembelian = async(req, res, data) => {
     const po_pembelian = Math.floor(100000 + Math.random() * 999999)
 
     await Pembelian.create({
-        po_pembelian, 
+        po_pembelian,
         kodebahan: data.kodebahan,
         id_reorder: data.id,
         quantity: data.quantity,
