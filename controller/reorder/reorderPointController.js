@@ -1,6 +1,6 @@
 const ReorderPoint = require("../../models/index").reorder_point_log
 const {response, setLog, resError} = require("../../helper/response")
-const {AutoAddNewPembelian} = require("./pembelianController")
+const {AddPurchaseOrder} = require("./purchaseOrderController")
 const {Op} = require("sequelize")
 
 const AddReorderPoint = async(data) => {
@@ -34,9 +34,9 @@ const UpdateStatusApproveReorder = async(req, res) => {
             data.revisiDesc = data.revisiDesc
         }
         data.save()
-
+        console.log(data)
         if(status === 'Approved') {
-            AutoAddNewPembelian(req, res, data)
+            AddPurchaseOrder(req, res, data)
         }
         response(200, "Update Status Approve SUCCESS", data, res)
     }).catch(error => {
