@@ -1,4 +1,5 @@
 const ReorderPoint = require("../../models/index").reorder_point_log
+const Supplier = require("../../models/index").suplier
 const {response, setLog, resError} = require("../../helper/response")
 const {AddPurchaseOrder} = require("./purchaseOrderController")
 const {Op} = require("sequelize")
@@ -20,7 +21,7 @@ const AddReorderPoint = async(data) => {
 
 const UpdateStatusApproveReorder = async(req, res) => {
     const id = req.params.id
-    let {status, quantity, revisiDesc, lastUser} = req.body
+    let {status, quantity, revisiDesc, lastUser, supplier} = req.body
     if (status === "Request") {
         status = "Wait For"
     }
@@ -33,8 +34,13 @@ const UpdateStatusApproveReorder = async(req, res) => {
         } else {
             data.revisiDesc = data.revisiDesc
         }
+        if (supplier !== "") {
+            data.supplier = supplier
+        } else {
+            data.supplier = data.supplier
+        }
         data.save()
-        console.log(data)
+
         if(status === 'Approved') {
             AddPurchaseOrder(req, res, data)
         }

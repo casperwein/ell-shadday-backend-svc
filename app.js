@@ -19,6 +19,7 @@ const produk = require("./router/produk/produkRouter")
 const pemakaian = require("./router/produk/pemakaianRouter")
 
 const reorder = require("./router/reorder/reorderRouter")
+const otherSvc = require("./router/others/dataForDashboardRouter")
 
 
 const app = express()
@@ -63,5 +64,7 @@ app.use("/pemakaian", pemakaian)
 app.use("/bahan-sisa", bahansisa)
 
 app.use("/rop", reorder)
+
+app.use("/other-svc", otherSvc)
 
 app.listen(port, () => console.log(`ell-shadday-app:${port}`))

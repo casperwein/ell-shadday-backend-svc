@@ -16,6 +16,7 @@ const AddPurchaseOrder = async(req, res, data) => {
         items: [
             { kodebahan: data.kodebahan, warna : data.warna, quantity: data.quantity }
         ],
+        supplier: data.supplier
     };
 
     await PurchaseOrder.create({
