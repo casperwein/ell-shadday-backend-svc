@@ -21,7 +21,7 @@ const GetDataForDashboard = async (req, res) => {
         totalApproved = await ROP.count({where: {status: "Approved"}})
         totalRevisi = await ROP.count({where: {status: "Revisi"}})
     } catch (error) {
-        resError(500, process.env.ISE, error, res)
+        resError(500, processx.env.ISE, error, res)
     }
 
     const data = {

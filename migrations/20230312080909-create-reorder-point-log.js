@@ -26,6 +26,9 @@ module.exports = {
       revisiDesc: {
         type: Sequelize.STRING
       },
+      supplier: {
+        type: Sequelize.STRING
+      },
       lastUser: {
         type: Sequelize.STRING
       },

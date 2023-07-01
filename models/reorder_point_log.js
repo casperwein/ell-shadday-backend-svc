@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     tanggal_reorder_point: DataTypes.DATE,
     status: DataTypes.STRING,
     revisiDesc: DataTypes.STRING,
+    supplier: DataTypes.STRING,
     lastUser: DataTypes.STRING
   }, {
     sequelize,
