@@ -4,6 +4,8 @@ const Bahan = require("../../models/index").bahan
 const {response, resError} = require("../../helper/response")
 const {AddBahan} = require("./bahanController")
 const multer = require("multer")
+const moment = require("moment/moment");
+const {Op} = require("sequelize");
 
 
 const GetAllBahanBaku = async(req, res) => {
@@ -77,8 +79,42 @@ const FindBahanBakuByID = async(req, res) => {
     })
 }
 
+const GetBahanBakuFilter = async(req, res) => {
+    let  {scanTime,startDate, endDate, suplierId } = req.query
+
+    const data = {
+        scanTime, startDate, endDate, suplierId
+    }
+    let whereCondition = {};
+
+    if (suplierId) {
+        whereCondition.suplierId = suplierId;
+    }
+    if (scanTime) {
+        whereCondition.createdAt = {
+            [Op.between]: [startDate, endDate]
+        };
+    }
+    if (suplierId && scanTime ) {
+        whereCondition.suplierId = suplierId;
+        whereCondition.createdAt = {
+            [Op.between]: [startDate, endDate]
+        };
+    }
+
+    console.log(whereCondition)
+
+    await Baku.findAll({where: whereCondition}).then(baku => {
+        response(200, "SUCCESS", baku, res)
+    }).catch(error => {
+        resError(500, process.env.ISE, error, res)
+    })
+
+}
+
 module.exports = {
     GetAllBahanBaku,
+    GetBahanBakuFilter,
     AddBahanBaku,
     FindBahanBakuByID
 }

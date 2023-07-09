@@ -1,8 +1,9 @@
 const Bahan = require("../../models/index").bahan
 const Pemakaian = require("../../models/index").pemakaian
-
+const {Op} = require('sequelize')
 const {response, resError} = require("../../helper/response")
 const { sequelize } = require("../../models/index")
+const moment = require('moment')
 
 
 const GetBahan = async(req, res) => {
@@ -84,11 +85,46 @@ const DeleteBahanBaku = async(req, res) => {
     .catch(error => console.log(error))
 }
 
+const GetDataWithFilter = async (req, res) => {
+    // const data = {startDate, endDate, kategori } = req.query
+    let {scanTime,startDate, endDate, kategori } = req.query
+
+    const data = {
+        scanTime, startDate, endDate, kategori
+    }
+    let whereCondition = {};
+
+    if (kategori) {
+        whereCondition.kategori = kategori;
+    }
+    if (scanTime) {
+        whereCondition.createdAt = {
+            [Op.between]: [startDate, endDate]
+        };
+    }
+    if (kategori && scanTime ) {
+        whereCondition.kategori = kategori;
+        whereCondition.createdAt = {
+            [Op.between]: [startDate, endDate]
+        };
+    }
+
+    await Bahan.findAll({where: whereCondition}).then(bhn => {
+        console.log(bhn)
+        response(200, "SUCCESS", bhn, res)
+    }).catch(error => {
+        console.log(error)
+        resError(500, process.env.ISE, error, res)
+    })
+
+}
+
 module.exports = { 
     GetBahan,
     AddBahan,
     ListPemakaian, 
     GetBahanByKodebahan,
     DeleteBahanBaku,
-    EditBahanBaku
+    EditBahanBaku,
+    GetDataWithFilter
 }
