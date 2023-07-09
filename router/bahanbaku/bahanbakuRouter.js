@@ -9,6 +9,7 @@ const router = express.Router()
 
 router.post("/add", Baku.AddBahanBaku)
 router.get("/", Baku.GetAllBahanBaku)
+router.get("/filter", Baku.GetBahanBakuFilter)
 router.get("/:kodebahan", FindKodeBahan, Baku.FindBahanBakuByID)
 
 
