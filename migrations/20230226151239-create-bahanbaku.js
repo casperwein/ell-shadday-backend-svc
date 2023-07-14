@@ -39,7 +39,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       yard_kg_meter_return: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT
       },
       penerima: {
         type: Sequelize.STRING
@@ -47,8 +47,11 @@ module.exports = {
       kurir: {
         type: Sequelize.STRING
       },
-      note: {
-        type: Sequelize.STRING
+      harga_satuan: {
+        type: Sequelize.FLOAT
+      },
+      total_harga: {
+        type: Sequelize.FLOAT
       },
       gambar: {
         type: Sequelize.STRING
@@ -62,8 +65,6 @@ module.exports = {
       list_return: {
         type: Sequelize.STRING
       },
-
-
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

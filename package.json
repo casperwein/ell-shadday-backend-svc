@@ -8,6 +8,7 @@
         "start": "nodemon app.js",
         "db": "npx sequelize db:migrate",
         "db:undo": "npx sequelize db:migrate:undo",
+        "db:undo:all": "npx sequelize db:migrate:undo:all",
         "seed": "npx sequelize db:seed:all"
     },
     "keywords": [],
