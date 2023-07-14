@@ -20,13 +20,16 @@ const GetAllBahanBaku = async(req, res) => {
 
 const AddBahanBaku = async(req, res) => {
     const gambar = req.file.path
+
     let {suplierId, warna, kodebahan, bahan_bahu_desc, tanggal_terima, tempat_penyimpanan, roll_ball_quantity,
         kg_yard_meter_quantity, is_return, roll_ball_return, yard_kg_meter_return, penerima, kurir, note, faktur, 
-        nama, list, list_return, satuan, ukuran, kategori} = req.body
+        nama, list, list_return, satuan, ukuran, kategori, harga_satuan, total_harga} = req.body
 
     const image = gambar.replace(/\\/g, '/'); // ganti nama gambar
 
     is_return != "Y" ? (is_return = 'N', roll_ball_return = 0, yard_kg_meter_return = 0, list_return = 0) : (roll_ball_return, yard_kg_meter_return, list_return)
+
+    total_harga = kg_yard_meter_quantity * harga_satuan
 
     await Bahan.findOne({where: {kodebahan: kodebahan}}).then(bahan => {
         if(!bahan){
@@ -44,19 +47,18 @@ const AddBahanBaku = async(req, res) => {
     await Baku.create({
         suplierId, warna, kodebahan, bahan_bahu_desc, tanggal_terima, tempat_penyimpanan, roll_ball_quantity,
         kg_yard_meter_quantity, is_return, roll_ball_return, yard_kg_meter_return, penerima, kurir, note, faktur, 
-        list, list_return, gambar: image
+        list, list_return, gambar: image, harga_satuan, total_harga
     }).then(data_baku => {
         Bahan.findOne({where: {kodebahan: kodebahan}}).then(bahan => {
-            const listBahan = list.split(",").map(ls => parseFloat(ls))
-            const jumlah_unit = listBahan.length
-            const total = listBahan.reduce((acc, sum) => acc + sum, 0)
+                const listBahan = list.split(",").map(ls => parseFloat(ls))
+                const jumlah_unit = listBahan.length
+                const total = listBahan.reduce((acc, sum) => acc + sum, 0)
             
             // save data to bahan
             bahan.roll_ball_quantity = bahan.roll_ball_quantity + jumlah_unit
             bahan.yard_kg_clean = bahan.yard_kg_clean + total
             bahan.total_yard_kg = bahan.total_yard_kg + total
             bahan.save()
-
         }).catch(error => {
             // resError(500, process.env.ISE, error, res)
             console.log(error)
@@ -67,7 +69,6 @@ const AddBahanBaku = async(req, res) => {
         resError(500, process.env.ISE, error, res)
     })
 }
-
 
 const FindBahanBakuByID = async(req, res) => {
     const kodebahan = req.params.kodebahan
@@ -102,18 +103,32 @@ const GetBahanBakuFilter = async(req, res) => {
         };
     }
 
-    console.log(whereCondition)
-
     await Baku.findAll({where: whereCondition}).then(baku => {
-        response(200, "SUCCESS", baku, res)
+        let grandTotal = baku.reduce((a,b) => a + b.total_harga, 0)
+        const dataRes = {
+            grandTotal, baku
+        }
+        response(200, "SUCCESS", dataRes, res)
     }).catch(error => {
         resError(500, process.env.ISE, error, res)
     })
+}
 
+const GetDataLaporan = async (req,res) => {
+    await Baku.findAll().then(baku => {
+        let grandTotal = baku.reduce((a,b) => a + b.total_harga, 0)
+        const dataRes = {
+            grandTotal, baku
+        }
+        response(200, "SUCCESS", dataRes, res)
+    }).catch(error => {
+        resError(500, process.env.ISE, error, res)
+    })
 }
 
 module.exports = {
     GetAllBahanBaku,
+    GetDataLaporan,
     GetBahanBakuFilter,
     AddBahanBaku,
     FindBahanBakuByID
