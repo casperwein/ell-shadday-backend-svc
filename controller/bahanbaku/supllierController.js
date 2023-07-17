@@ -26,13 +26,19 @@ const AddSuplier = async(req, res) => {
 
 const UpdateSuplier = async(req, res) => {
     const id = req.params.id
-    const data =  {nama, email, telepon} = req.body.suplier
+    const data = {nama, email, telepon, alamat} = req.body
 
-    await Suplier.update(data, {where: {id}}).then(data_suplier => {
-        return response(200, "UPDATE SUCCESS", data_suplier, res)
+    await Suplier.findOne({where: {id}}).then(dt => {
+        for (const field in data) {
+            if (data[field] !== "") {
+                dt[field] = data[field];
+            }
+        }
+        dt.save()
+        response(200, "UPDATE SUCCESS", [], res)
     }).catch(error => {
         console.log(error)
-        return resError(500, msgISE, error, res)
+        resError(500, msgISE, error, res)
     })
 }
 
@@ -45,9 +51,20 @@ const DeleteSuplier = async(req, res) => {
     })
 }
 
+const GetDataKategoriByID = async (req, res) => {
+    const id = req.params.id
+
+    await Suplier.findOne({where: {id}}).then(data => {
+        response(200, "SUCCESS", data, res)
+    }).catch(error => {
+        return resError(500, msgISE, error, res)
+    })
+}
+
 module.exports = {
     GetSuplierData,
     AddSuplier,
     UpdateSuplier,
-    DeleteSuplier
+    DeleteSuplier,
+    GetDataKategoriByID
 }

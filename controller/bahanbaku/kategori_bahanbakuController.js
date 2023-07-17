@@ -1,6 +1,6 @@
 const Kategori = require("../../models/index").kategori_bahanbaku
 const {response, setLog, resError} = require("../../helper/response")
-
+const {error} = require("winston");
 
 const GetAllKategori = async(req, res) => {
     await Kategori.findAll().then(kategori => {
@@ -11,6 +11,35 @@ const GetAllKategori = async(req, res) => {
     })
 }
 
+const UpdateDataKategori = async (req, res) => {
+    const id = req.params.id
+    const {nama, keterangan} = req.body
+
+    await Kategori.findOne({where: {id}}).then(data => {
+        if(nama !== '' && keterangan == '') {
+            data.nama = nama
+        } else if(keterangan !== '' && nama == '') {
+            data.keterangan = keterangan
+        } else if (keterangan !== '' && nama !== '') {
+            data.nama = nama
+            data.keterangan = keterangan
+        }
+        data.save()
+        response(200, "Update Status Suksess", data, res)
+    }).catch(error => {
+        console.log(error)
+        resError(500, process.env.ISE, error, res)
+    })
+}
+
+const GetDataKategoriByID = async (req, res) => {
+    const id = req.params.id
+    await Kategori.findOne({where: {id}}).then(data => {
+        response(200, "SUCCESS", data, res)
+    }).catch(error => {
+        resError(500, process.env.ISE, error, res)
+    })
+}
 const AddKategori = async(req, res) => {
     const {nama, keterangan} = req.body
 
@@ -34,5 +63,7 @@ const DeleteKategori = async(req, res) => {
 module.exports = {
     GetAllKategori,
     AddKategori,
-    DeleteKategori
+    DeleteKategori,
+    UpdateDataKategori,
+    GetDataKategoriByID
 }
