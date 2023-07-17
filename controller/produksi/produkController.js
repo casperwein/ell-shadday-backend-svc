@@ -73,10 +73,38 @@ const GetDataWithFilter = async (req, res) => {
     })
 }
 
+const UpdateProduk = async (req, res) => {
+    const gambar = req.file
+    const po = req.params.po
+    let {
+        nama_produk, kodebahan, attributes, cutter_id, cmt_id,
+        proggress
+    } = req.body
+
+    const data = {
+        nama_produk, kodebahan, attributes, cutter_id, cmt_id,
+        proggress, gambar
+    }
+
+    await Produk.findOne({where: {po}}).then(dt => {
+        for (const field in data) {
+            if (data[field] !== "") {
+                dt[field] = data[field];
+            }
+        }
+        dt.save()
+        response(200, "UPDATE SUCCESS", [], res)
+    }).catch(error => {
+        console.log(error)
+        resError(500, process.env.ISE, error, res)
+    })
+}
+
 
 module.exports = {
     AddProduk,
     GetAllProduk,
     GetProdukById,
-    GetDataWithFilter
+    GetDataWithFilter,
+    UpdateProduk
 } 

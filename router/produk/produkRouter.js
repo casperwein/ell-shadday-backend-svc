@@ -9,6 +9,7 @@ router.post("/add", produkController.AddProduk)
 router.get("/", produkController.GetAllProduk)
 router.get("/filter", produkController.GetDataWithFilter)
 router.get("/:po", produkController.GetProdukById)
+router.put("/edit/:po", produkController.UpdateProduk)
 
 
 module.exports = router

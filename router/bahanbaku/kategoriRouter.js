@@ -10,5 +10,7 @@ const router = express.Router()
 router.get("/", Kategori.GetAllKategori)
 router.post("/add", Kategori.AddKategori)
 router.delete("/:id", Kategori.DeleteKategori)
+router.put("/edit/:id", Kategori.UpdateDataKategori)
+router.get("/:id", Kategori.GetDataKategoriByID)
 
 module.exports = router

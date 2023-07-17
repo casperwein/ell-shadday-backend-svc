@@ -6,7 +6,8 @@ const { admin } = require("../../middleware/access-controll")
 
 router.get("/", suplierController.GetSuplierData)
 router.post("/add", suplierController.AddSuplier)
-router.put("/:id", suplierController.UpdateSuplier)
+router.put("/edit/:id", suplierController.UpdateSuplier)
 router.delete("/:id", suplierController.DeleteSuplier)
+router.get("/:id", suplierController.GetDataKategoriByID)
 
 module.exports = router
