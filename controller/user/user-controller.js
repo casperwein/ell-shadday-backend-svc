@@ -46,7 +46,7 @@ const GetAllUser = async(req, res) => {
         const len = user.length;
         let  userID,
         full_name, email, username, place_dob,
-        data, dob, role, gender, phone_number, createdAt
+        data, dob, role, gender, phone_number, gambar,status
 
         const data_user = new Array();
 
@@ -60,11 +60,12 @@ const GetAllUser = async(req, res) => {
             role = user[i].role
             gender = user[i].gender
             phone_number = user[i].phone_number
-            createdAt = user[i].createdAt
+            gambar = user[i].gambar
+            status = user[i].status
             data = {
                 userID,
                 full_name, email, username, place_dob,
-                dob, role, gender, phone_number, createdAt
+                dob, role, gender, phone_number, gambar,status
             }
             data_user.push(data)
         }

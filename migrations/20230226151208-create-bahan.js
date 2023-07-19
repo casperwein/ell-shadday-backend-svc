@@ -41,6 +41,9 @@ module.exports = {
       kategori: {
         type: Sequelize.STRING
       },
+      safety_stock: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

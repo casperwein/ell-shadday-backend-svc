@@ -88,6 +88,7 @@ const DeleteBahanBaku = async(req, res) => {
 const GetDataWithFilter = async (req, res) => {
     // const data = {startDate, endDate, kategori } = req.query
     let {scanTime,startDate, endDate, kategori } = req.query
+    scanTime =='AllTime' ? scanTime = '' : scanTime = scanTime
 
     const data = {
         scanTime, startDate, endDate, kategori
@@ -110,10 +111,8 @@ const GetDataWithFilter = async (req, res) => {
     }
 
     await Bahan.findAll({where: whereCondition}).then(bhn => {
-        console.log(bhn)
         response(200, "SUCCESS", bhn, res)
     }).catch(error => {
-        console.log(error)
         resError(500, process.env.ISE, error, res)
     })
 

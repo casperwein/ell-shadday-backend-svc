@@ -17,6 +17,9 @@ module.exports = {
       json_data: {
         type: Sequelize.STRING(1000)
       },
+      path: {
+        type: Sequelize.STRING(1000)
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

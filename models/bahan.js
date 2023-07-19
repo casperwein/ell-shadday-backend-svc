@@ -40,6 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     satuan: DataTypes.STRING,
     ukuran: DataTypes.STRING,
     kategori: DataTypes.STRING,
+    safety_stock: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'bahan',

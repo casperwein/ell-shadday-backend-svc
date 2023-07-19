@@ -1,6 +1,8 @@
+const PurchaseOrder = require("./../models/index").purchase_order
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
 const path = require('path')
+const {setLog} = require("./response");
 const currentDate = new Date();
 
 const year = currentDate.getFullYear();
@@ -13,7 +15,22 @@ const generatePurchaseOrderPDF = (purchaseOrder) => {
     try {
         const doc = new PDFDocument();
         const dir = '../public/purchase-order/'
-        const fileName = path.join(__dirname, dir, `PurchaseOrder_${purchaseOrder.number}_${formattedDate}.pdf`)
+        const po_name = `PurchaseOrder_${purchaseOrder.number}_${formattedDate}.pdf`
+        const fileName = path.join(__dirname, dir, po_name)
+
+        const po = purchaseOrder.number
+        const data = {po, fileName}
+
+        function UpdatePathPurchaseOrder () {
+            PurchaseOrder.findOne({where: {po}}).then(dt => {
+                dt.path = `public/purchase-order/${po_name}`
+                dt.save()
+                setLog("success update path to database", data)
+            }).catch(error => {
+                console.log(error)
+                setLog("error add path", error)
+            })
+        }
 
         // Membuat file PDF
         doc.pipe(fs.createWriteStream(fileName));
@@ -26,7 +43,7 @@ const generatePurchaseOrderPDF = (purchaseOrder) => {
         doc.fontSize(10).text('425353', { align: 'left' });
         doc.moveDown();
 
-         doc.fontSize(20).text('Purchase Order', { align: 'center', underline: true });
+        doc.fontSize(20).text('Purchase Order', { align: 'center', underline: true });
         doc.fontSize(10).text(`No: ${purchaseOrder.number}`, { align: 'center' });
         doc.moveDown();
         doc.fontSize(14).text(`Date: ${purchaseOrder.date}`);
@@ -54,7 +71,7 @@ const generatePurchaseOrderPDF = (purchaseOrder) => {
         // Selesai membuat PDF
         doc.end();
         console.log(`File PDF Purchase Order berhasil dibuat: ${fileName}`);
-
+        UpdatePathPurchaseOrder()
     } catch (e) {
         console.log(e)
     }

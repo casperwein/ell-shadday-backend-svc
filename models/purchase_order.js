@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     po: DataTypes.INTEGER,
     id_rop: DataTypes.STRING,
     json_data: DataTypes.STRING,
+    path: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'purchase_order',
