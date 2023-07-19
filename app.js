@@ -19,8 +19,8 @@ const produk = require("./router/produk/produkRouter")
 const pemakaian = require("./router/produk/pemakaianRouter")
 
 const reorder = require("./router/reorder/reorderRouter")
-const otherSvc = require("./router/others/dataForDashboardRouter")
-
+const otherSvcDashboard = require("./router/others/dataForDashboardRouter")
+const otherSvcPoGenerated = require("./router/others/po_generated")
 
 const app = express()
 const port = process.env.PORT 
@@ -50,7 +50,7 @@ app.use("/users", userRouter)
 app.use("/users-address", addressRouter)
 app.use("/users-bank-account", userBankAcc)
 
-app.use('/public/assets', express.static(path.join(__dirname, 'public/assets')))
+app.use('/public', express.static(path.join(__dirname, 'public')))
 app.use(multer({storage: storage, fileFilter: filterGambar}).single('gambar'))
 app.use("/bahan", bahan)
 app.use("/bahan-baku", bahanBaku)
@@ -65,6 +65,8 @@ app.use("/bahan-sisa", bahansisa)
 
 app.use("/rop", reorder)
 
-app.use("/other-svc", otherSvc)
+app.use("/other-svc-po", otherSvcPoGenerated)
+app.use("/other-svc", otherSvcDashboard)
+
 
 app.listen(port, () => console.log(`ell-shadday-app:${port}`))

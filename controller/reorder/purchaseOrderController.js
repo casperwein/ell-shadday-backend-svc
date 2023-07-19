@@ -32,6 +32,20 @@ const AddPurchaseOrder = async(req, res, data) => {
     })
 }
 
+const UpdatePathPurchaseOrder = async (data) => {
+    const po = data.po
+
+    await PurchaseOrder.findOne({where: {po}}).then(dt => {
+        dt.path = data.fileName
+        setLog("success update path to database", data)
+
+    }).catch(error => {
+        console.log(error)
+        setLog("error add path", error)
+    })
+}
+
 module.exports = {
-    AddPurchaseOrder
+    AddPurchaseOrder,
+    UpdatePathPurchaseOrder
 }
