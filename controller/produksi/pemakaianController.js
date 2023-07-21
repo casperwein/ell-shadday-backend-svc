@@ -6,6 +6,7 @@ const BahanSisa = require("../../models/index").bahansisa
 const {response, setLog, resError} = require("../../helper/response")
 const {dateNow} = require("../../helper/generate")
 const {AddReorderPoint} = require("../reorder/reorderPointController")
+const {Op} = require("sequelize");
 
 
 const AddPemakaianBarang = async(req, res) => {
@@ -144,10 +145,69 @@ const GetPemakaianByPOProduksi = async(req, res) => {
     })
 }
 
+const GetDataWithFilter = async (req, res) => {
+    // const data = {startDate, endDate, kategori } = req.query
+    let {scanTime,startDate, endDate, kodebahan, po_produk } = req.query
+    scanTime =='AllTime' ? scanTime = '' : scanTime = scanTime
+
+    const data = {
+        scanTime, startDate, endDate, kodebahan
+    }
+    let whereCondition = {};
+
+    if (kodebahan && scanTime && po_produk) {
+        whereCondition.kodebahan = kodebahan;
+        whereCondition.po_produk = po_produk;
+        whereCondition.createdAt = {
+            [Op.between]: [startDate, endDate]
+        };
+    }
+    if (kodebahan && po_produk) {
+        whereCondition.kodebahan = kodebahan;
+        whereCondition.po_produk = po_produk;
+    }
+
+    if (po_produk && scanTime ) {
+        whereCondition.po_produk = po_produk;
+        whereCondition.createdAt = {
+            [Op.between]: [startDate, endDate]
+        };
+    }
+
+    if (kodebahan && scanTime ) {
+        whereCondition.kodebahan = kodebahan;
+        whereCondition.createdAt = {
+            [Op.between]: [startDate, endDate]
+        };
+    }
+    if (po_produk) {
+        whereCondition.po_produk = po_produk;
+    }
+
+    if (kodebahan) {
+        whereCondition.kodebahan = kodebahan;
+    }
+    if (scanTime) {
+        whereCondition.createdAt = {
+            [Op.between]: [startDate, endDate]
+        };
+    }
+    console.log(whereCondition)
+
+    await Pemakaian.findAll({where: whereCondition}).then(bhn => {
+        response(200, "SUCCESS", bhn, res)
+    }).catch(error => {
+        console.log(error)
+        resError(500, process.env.ISE, error, res)
+    })
+}
+
+
 module.exports = {
     AddPemakaianBarang,
     GetAllDataPemakaian,
     GetPemakaianBahanByIDPemakaian,
     EditPemakaian,
-    GetPemakaianByPOProduksi
+    GetPemakaianByPOProduksi,
+    GetDataWithFilter
 }

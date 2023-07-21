@@ -81,7 +81,7 @@ const FindBahanBakuByID = async(req, res) => {
 }
 
 const GetBahanBakuFilter = async(req, res) => {
-    let  {scanTime,startDate, endDate, suplierId } = req.query
+    let  {scanTime,startDate, endDate, suplierId, kodebahan } = req.query
     scanTime =='AllTime' ? scanTime = '' : scanTime = scanTime
 
     const data = {
@@ -89,6 +89,21 @@ const GetBahanBakuFilter = async(req, res) => {
     }
 
     let whereCondition = {};
+
+    if (suplierId && scanTime == 'setTime' && kodebahan) {
+        whereCondition.suplierId = suplierId;
+        whereCondition.kodebahan = kodebahan;
+        whereCondition.createdAt = {
+            [Op.between]: [startDate, endDate]
+        };
+    }
+
+    if (kodebahan && scanTime == 'setTime' ) {
+        whereCondition.kodebahan = kodebahan;
+        whereCondition.createdAt = {
+            [Op.between]: [startDate, endDate]
+        };
+    }
 
     if (suplierId && scanTime == 'setTime' ) {
         whereCondition.suplierId = suplierId;
@@ -99,6 +114,11 @@ const GetBahanBakuFilter = async(req, res) => {
     if (suplierId) {
         whereCondition.suplierId = suplierId;
     }
+
+    if (kodebahan) {
+        whereCondition.kodebahan = kodebahan;
+    }
+
     if (scanTime) {
         whereCondition.createdAt = {
             [Op.between]: [startDate, endDate]
