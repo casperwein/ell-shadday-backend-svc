@@ -6,6 +6,7 @@ const { verify } = require("../../helper/authentication")
 const { admin } = require("../../middleware/access-controll")
 
 router.post("/add", pemakaianController.AddPemakaianBarang)
+router.get("/report/filter", pemakaianController.GetDataWithFilter)
 router.get("/", pemakaianController.GetAllDataPemakaian)
 router.get("/:id", pemakaianController.GetPemakaianBahanByIDPemakaian)
 router.get("/produksi-pemakaian/:po_produk", pemakaianController.GetPemakaianByPOProduksi)
