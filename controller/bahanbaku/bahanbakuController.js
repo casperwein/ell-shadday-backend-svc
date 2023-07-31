@@ -128,6 +128,10 @@ const GetBahanBakuFilter = async(req, res) => {
     await Baku.findAll({where: whereCondition}).then(baku => {
         let grandTotal = baku.reduce((a,b) => a + b.total_harga, 0)
         const dataRes = {
+			filter: {
+				filter_flag : "Y",
+				whereCondition,
+			},
             grandTotal, baku
         }
         response(200, "SUCCESS", dataRes, res)

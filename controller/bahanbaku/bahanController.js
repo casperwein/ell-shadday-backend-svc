@@ -86,7 +86,7 @@ const DeleteBahanBaku = async(req, res) => {
 
 const GetDataWithFilter = async (req, res) => {
     // const data = {startDate, endDate, kategori } = req.query
-    let {scanTime,startDate, endDate, kategori, kodebahan } = req.query
+    let {scanTime,startDate, endDate, kategori, kodebahan, warna } = req.query
     scanTime =='AllTime' ? scanTime = '' : scanTime = scanTime
 
     let whereCondition = {};
@@ -115,6 +115,7 @@ const GetDataWithFilter = async (req, res) => {
         whereCondition.kodebahan = kodebahan;
         whereCondition.kategori = kategori;
     }
+    
     if (kodebahan) {
         whereCondition.kodebahan = kodebahan;
     }
@@ -122,17 +123,41 @@ const GetDataWithFilter = async (req, res) => {
     if (kategori) {
         whereCondition.kategori = kategori;
     }
+    
     if (scanTime) {
         whereCondition.createdAt = {
             [Op.between]: [startDate, endDate]
         };
     }
-
-    await Bahan.findAll({where: whereCondition}).then(bhn => {
-        response(200, "SUCCESS", bhn, res)
-    }).catch(error => {
-        resError(500, process.env.ISE, error, res)
-    })
+    
+    if (warna) {
+		await Bahan.findAll({where: {
+           warna: {
+               [Op.like]: `%${warna}%`
+           }
+        }}).then(bhn => {
+			console.log(bhn)
+	        response(200, "SUCCESS", bhn, res)
+	    }).catch(error => {
+			console.log(error)
+	        resError(500, process.env.ISE, error, res)
+	    })
+	} else {
+		await Bahan.findAll({where: whereCondition}).then(bhn => {
+			const dataFilter = {
+				filter: {
+					filter_flag : "Y",
+					whereCondition,
+				},
+				bahan: bhn
+			}
+		
+	        response(200, "SUCCESS", dataFilter, res)
+	    }).catch(error => {
+			console.log(error)
+	        resError(500, process.env.ISE, error, res)
+	    })
+	}
 }
 
 const GetKodeBahan = async (req, res) => {
@@ -152,7 +177,7 @@ const GetKodeBahan = async (req, res) => {
     })
 }
 
-module.exports = { 
+module.exports = {
     GetBahan,
     GetKodeBahan,
     AddBahan,
