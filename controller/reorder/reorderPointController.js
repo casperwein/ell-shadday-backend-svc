@@ -96,10 +96,33 @@ const GetReorderByID = async(req, res) => {
     })
 }
 
+const GetAllertRop = async(req, res) => {
+	const totalRop = await ReorderPoint.count({where: {status: "Rop"}})
+	const totalWaitFor = await ReorderPoint.count({where: {status: "Wait For"}})
+	await ReorderPoint.findAll({
+		attributes: ['kodebahan'],
+		where: {
+			status: "Rop"
+		}
+	}).then(bhn => {
+		const kodebahanString = bhn.map(item => item.kodebahan).join(', ');
+		const dataRes = {
+			totalRop, 
+			totalWaitFor,
+			kodebahan: kodebahanString
+		}
+		response(200, "get Data succesfully", dataRes, res)		
+	}).catch(error => {
+        console.log(error)
+        resError(500, process.env.ISE, error, res)
+    })
+}
+
 module.exports = {
     AddReorderPoint,
     GetAllReorder,
     UpdateStatusApproveReorder,
     GetDataBerkala,
-    GetReorderByID
+    GetReorderByID,
+    GetAllertRop
 }
