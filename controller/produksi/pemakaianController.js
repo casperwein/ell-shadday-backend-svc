@@ -33,8 +33,7 @@ const AddPemakaianBarang = async(req, res) => {
         const bg = total_potongan_pakaian % 12
         lusin = parseFloat(lsn + '.' + bg);
 
-        // menghitung sisaan       
-        //TODO: bisa dipikirkan lagi untuk perhitungan sisa bahan kaos
+        // menghitung sisaan 
         const sisa = (total_yard_kg - yard_kg_pemakaian).toFixed(2)
         if (sisa > 1 ){
             sisa_flag = "Y"
@@ -74,7 +73,7 @@ const AddPemakaianBarang = async(req, res) => {
                 const data = {
                     kodebahan, newQuantity, warna: bahan.warna
                 }
-                AddReorderPoint(data)   
+                AddReorderPoint(data)
             }
             
         // insert to bahan sisa if sisa flag = Y
@@ -87,7 +86,7 @@ const AddPemakaianBarang = async(req, res) => {
 
                 ).catch(error=> console.log(error))
             }
-        })        
+        })
 
         // input jumlah lusin di produk
         Produk.findOne({where: {po: po_produk}}).then(produk => {
