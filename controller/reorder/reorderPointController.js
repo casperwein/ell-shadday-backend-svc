@@ -1,5 +1,7 @@
 const ReorderPoint = require("../../models/index").reorder_point_log
+const Pemakaian = require("../../models/index").pemakaian
 const Supplier = require("../../models/index").suplier
+const Bahan = require("../../models/index").bahan
 const {response, setLog, resError} = require("../../helper/response")
 const {AddPurchaseOrder} = require("./purchaseOrderController")
 const {Op} = require("sequelize")
@@ -118,11 +120,57 @@ const GetAllertRop = async(req, res) => {
     })
 }
 
+
+const RopCalculation = async(req, res) => {
+	const thirtyDaysAgo = new Date();
+	thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+	
+	try {
+		const kodebahan = 'GS342'
+		const safetyStock = await Bahan.findAll({
+			attributes: ['safety_stock'],
+			where: {kodebahan}
+		})
+		
+		const dataPemakaian = await Pemakaian.findAll({
+			attributes: ['yard_kg_pemakaian'],
+			where: {kodebahan}
+		})
+				
+		const arrDataPemakaian = [];
+		let sum = 0;
+		dataPemakaian.forEach(item => arrDataPemakaian.push(item.yard_kg_pemakaian));
+		arrDataPemakaian.forEach(d => sum += d);
+		
+		const demand = (sum / arrDataPemakaian.length).toFixed(2);
+		
+		response(200, "get Data succesfully", {sum, demand, arrDataPemakaian}, res)
+		// console.log(dataPemakaian)
+		// console.log(safetyStock);
+		
+		// const pemakaianLast30d = await Pemakaian.findAll({
+		//	 attributes: ['yard_kg_pemakaian'],
+		//	where: {
+		//		kodebahan,
+		//		[Op.gte]: thirtyDaysAgo
+		//	}
+		//})
+			
+		//console.log(pemakaianLast30d);
+		
+	} catch (e) {
+		
+		console.log(e)
+	}
+}
+
+
 module.exports = {
     AddReorderPoint,
     GetAllReorder,
     UpdateStatusApproveReorder,
     GetDataBerkala,
     GetReorderByID,
-    GetAllertRop
+    GetAllertRop,
+    RopCalculation
 }
