@@ -14,10 +14,10 @@ const logger = winston.createLogger({
     ),
     transports: [
         new winston.transports.File({
-            filename: "../log/application.log"
+            filename: "./log/application.log"
         }),
         new DailyRotateFile({
-            filename: "../log/app-%DATE%.log",
+            filename: "./log/app-%DATE%.log",
             maxSize: '100m'
         })
     ]
