@@ -42,6 +42,7 @@ const Login = async(req, res) => {
         }
         return response(200, msg, sendData, res )
     }).catch(error => {
+        console.log(error)
         return resError(500, msgISE, error, res )
     })
 }
