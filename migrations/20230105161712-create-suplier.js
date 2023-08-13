@@ -4,7 +4,9 @@ module.exports = {
     await queryInterface.createTable('supliers', {
       id: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
       },
       nama: {
         type: Sequelize.STRING,

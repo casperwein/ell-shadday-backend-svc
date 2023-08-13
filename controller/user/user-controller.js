@@ -5,7 +5,7 @@ const { hashPassword, comparePassword } = require("../../helper/bcrypt")
 const {response, resError, invalidRequestRespon} = require("../../helper/response")
 
 const GetMyData = async(req, res) => {
-    const id = req.id
+    const id = req.id 
 
     await User.findOne({
         where: {id},
@@ -78,10 +78,38 @@ const GetAllUser = async(req, res) => {
 
 const Register = async(req, res) => {
     let id = Math.floor(10000 + Math.random() * 99999)
-    const { 
+    const yy = "23"
+    let { 
         full_name, email, password, username, place_dob,
         dob, role, gender, phone_number} = req.body;
+    let roleCode
+    // set role
+    if(role == 'pimpinan') {
+		roleCode = "1"
+	} else if(role == 'superadmin') {
+		roleCode = "2"
+	} else if(role == "admin") {
+		roleCode = "3"
+	} else if(role == "cmt") {
+		roleCode = "8"
+	} else if(roleCode == "cutter"){
+		roleCode = "4"
+	} else {
+		roleCode = "5"
+	}
+    const seq = "004"
+    
+    const userId = yy + roleCode + seq
 
+    console.log(userId)
+//    dataUser = { 
+//        full_name, email, password, username, place_dob,
+//        dob, role, gender, phone_number}
+        
+    // console.log( full_name, email, password, username, place_dob,
+    //     dob, role, gender, phone_number)
+    // console.log(password)
+    
     const hash = hashPassword(password)
 
     await User.findOne({ where: { email, username } }).then(user => {
@@ -104,7 +132,7 @@ const Register = async(req, res) => {
             } 
             console.log(data)         
             // res.status
-            return response(409, "success", data.user, res) 
+            return response(201, "success", data.user, res) 
         }).catch(error => {
             console.log(error)
             return resError(500, process.env.ISE, error, res)
