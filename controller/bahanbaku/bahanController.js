@@ -52,7 +52,7 @@ const AddBahan = async(data)=> {
         total_yard_kg : 0.0,
         yard_kg_clean : 0.0,
         yard_kg_sisa : 0.0
-    }).then().catch()
+    }).then().catch(error => console.log(error))
 }
 
 const GetBahanByKodebahan = async (req, res)=> {

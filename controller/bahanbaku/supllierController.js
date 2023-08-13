@@ -11,11 +11,10 @@ const GetSuplierData = async(req, res) => {
 }
 
 const AddSuplier = async(req, res) => {
-    let id = Math.floor(1000 + Math.random() * 9999)
     
     const {nama, email, telepon, alamat} = req.body
     
-    await Suplier.create({id, nama, email, telepon, alamat})
+    await Suplier.create({nama, email, telepon, alamat})
         .then(result => {
             return response(200, "SUCCESS", result, res)
         }).catch(error => {

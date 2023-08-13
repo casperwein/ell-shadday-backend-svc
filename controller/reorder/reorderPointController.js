@@ -134,7 +134,7 @@ const RopCalculation = async(req, res) => {
 		
 		const dataPemakaian = await Pemakaian.findAll({
 			attributes: ['yard_kg_pemakaian'],
-			where: {kodebahan}
+			where: {kodebahan}	
 		})
 				
 		const arrDataPemakaian = [];
